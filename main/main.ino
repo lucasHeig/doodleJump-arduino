@@ -11,19 +11,21 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 8, PIN_MATRIX,
     NEO_GRB + NEO_KHZ800);
 
 const int baseY = 7;
-const int jumpHeight = 4;
+const int jumpHeight = 5;
 int pos;
 int direction = -1;
 int x;
+int score = 0;
 
 const int numPlateformes = 3;  // Nombre de plateformes visibles à la fois
 int plateformes[numPlateformes][2] = {  
-  {1, 6},  // Plateforme 1 (X=1, Y=6)
-  {3, 4},  // Plateforme 2 (X=3, Y=4)
-  {0, 2}   // Plateforme 3 (X=0, Y=1)
+  {1, 5},  // Plateforme 1 (X=1, Y=5)
+  {3, 3},  // Plateforme 2 (X=3, Y=3)
+  {0, 1}   // Plateforme 3 (X=0, Y=1)
 };
 
 void setup() {
+  Serial.begin(9600);
   matrix.begin();
   matrix.setBrightness(20);
   pinMode(PIN_LEFT, INPUT_PULLUP);
@@ -60,32 +62,52 @@ void loop() {
   matrix.fillScreen(0);
 
   // Dessiner le personnage (rouge)
-  matrix.drawPixel(x, pos, matrix.Color(255, 0, 0));
-  matrix.drawPixel(x, pos - 1, matrix.Color(255, 0, 0));
+  matrix.drawPixel(x, pos, matrix.Color(10, 10, 200));
+  matrix.drawPixel(x, pos - 1, matrix.Color(10, 10, 200));
 
   // Dessiner les plateformes (vertes)
   for (int i = 0; i < numPlateformes; i++) {
     int px = plateformes[i][0];
     int py = plateformes[i][1];
-    matrix.drawPixel(px, py, matrix.Color(0, 255, 0));
-    matrix.drawPixel(px + 1, py, matrix.Color(0, 255, 0));
+    matrix.drawPixel(px, py, matrix.Color(10, 200, 10));
+    matrix.drawPixel(px + 1, py, matrix.Color(10, 200, 10));
   }
 
   matrix.show();
   delay(200);
 
-  // Mise à jour de la position verticale
-  pos += direction;
-
-  // Détection de collision avec une plateforme pour déclencher un saut
+  // Vérifier si le personnage touche une plateforme par en dessous (éviter de traverser)
   for (int i = 0; i < numPlateformes; i++) {
     int px = plateformes[i][0];
     int py = plateformes[i][1];
 
-    if (direction == 1 && pos == py + 1 && (x == px || x == px + 1)) {
-      pos = py + 1;  // Arrêter la descente sur la plateforme
-      direction = -1;  // Commencer un saut automatiquement
+    if (direction == 1 && pos + 1 == py && (x == px || x == px + 1)) {
+      pos = py - 1;  // Reste sur la plateforme
+      direction = -1;  // Rebond automatique
+      score++;
     }
+  }
+
+  // Mise à jour de la position verticale (descente contrôlée)
+  if (direction == 1) {
+    bool canFall = true;
+
+    // Vérifier si une plateforme bloque la chute
+    for (int i = 0; i < numPlateformes; i++) {
+      int px = plateformes[i][0];
+      int py = plateformes[i][1];
+
+      if (pos + 1 == py && (x == px || x == px + 1)) {
+        canFall = false;
+        break;
+      }
+    }
+
+    if (canFall) {
+      pos += direction;
+    }
+  } else {
+    pos += direction;
   }
 
   // Vérifier les limites du saut
@@ -106,8 +128,28 @@ void loop() {
 
   // Vérifier si le personnage tombe en dehors de l'écran -> GAME OVER
   if (pos > baseY) {
+    drawSkull();
+    delay(5000);
     matrix.fillScreen(0);  // Éteindre la matrice
     matrix.show();
-    while (1);  // Bloquer le programme (GAME OVER)
+    Serial.print("Score: "); Serial.println(score);
+    while (1);  // Bloquer le programme
   }
+}
+
+void drawSkull() {
+  matrix.fillScreen(0);  // effacer l'écran
+
+  matrix.drawPixel(1, 1, matrix.Color(255, 0, 0));
+  matrix.drawPixel(3, 1, matrix.Color(255, 0, 0));
+  matrix.drawPixel(1, 2, matrix.Color(255, 0, 0));
+  matrix.drawPixel(3, 2, matrix.Color(255, 0, 0));
+
+  matrix.drawPixel(1, 5, matrix.Color(255, 0, 0));
+  matrix.drawPixel(2, 5, matrix.Color(255, 0, 0));
+  matrix.drawPixel(3, 5, matrix.Color(255, 0, 0));
+  matrix.drawPixel(0, 6, matrix.Color(255, 0, 0));
+  matrix.drawPixel(4, 6, matrix.Color(255, 0, 0));
+
+  matrix.show();  // update affichage
 }
