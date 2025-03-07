@@ -31,7 +31,7 @@ J'ai essayé plusieurs contrôleurs : deux boutons ou avec un joystick. L'accél
 
 Lorsque le personnage tombe et sort de la matrice, le jeu se termine. Pour le game over, un smiley pas content apparaît en rouge et une mélodie se joue. Si le joueur a battu le record, un smiley souriant s'affiche sur la matrice en jaune et une mélodie de victoire est jouée. Le meilleur score est enregistré sur la mémoire EEPROM de l'Arduino.
 
-![Affichage de fin de partie](.\docs\assets\happy-unhappyFace.jpg)
+<img src="./docs/assets/happy-unhappyFace.jpg" alt="Affichage de fin de partie">
 
 
 ## Documentation
