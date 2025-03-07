@@ -7,7 +7,7 @@
 #include <SparkFunLSM9DS1.h> // accéléromètre
 #include <LiquidCrystal.h> // écran lcd
 
-const int SEUIL = 200;  // seuil inclinaison
+const int SEUIL = 300;  // seuil inclinaison
 const int rs = 13, en = 12, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 const int MELODY[] = { 262, 330, 392, 523, 660, 784, 1046 };
 const int NOTE_DURATIONS[] = { 200, 200, 200, 150, 150, 150, 500 };
