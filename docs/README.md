@@ -24,6 +24,7 @@ Voici les composants utilisés pour réaliser le jeu :
 | Accéléromètre                     | 1        | Sparkfun LSM9DS1 (3.3V) - Contrôle du personnage             | [Sparkfun](https://learn.sparkfun.com/tutorials/lsm9ds1-breakout-hookup-guide/all) |
 | Ecran LCD                         | 1        | Alphanumeric LCD (16x2 characters) - Affichage des scores    |                                                              |
 | Piezo capsule                     | 1        | PKM22EPP-40 - Son                                            | [Mouser Electronics](https://www.mouser.ch/ProductDetail/Murata-Electronics/PKM22EPP-40S1-B0?qs=KKWzfxBboQ3UGya49Xmz0w%3D%3D) |
+| Potentiomètre                     | 1        | Gestion luminosité écran LCD (facultatif)                    | [Arduino](https://sensorkit.arduino.cc/sensorkit/module/lessons/lesson/03-the-potentiometer) |
 
 ## Programme
 
@@ -39,7 +40,7 @@ Gestion des plateformes, de leur affichage, de leur apparition et du son lorsque
 
 ### Classe Game
 
-Gestion du déroulement du jeu ainsi que du score. Elle a besoin des deux classes ci-dessus pour fonctionner ainsi que la classe permettant le contrôle de l'accéléromètre ```<SparkFunLSM9DS1.h>```, la gestion de l'écran LCD ```<LiquidCrystal.h>```  ainsi que la mémoire EEPROM concertant le meilleur score ```<EEPROM.h>```. Cette classe contient la méthode ```setup()```et ```loop()``` qui est appelée dans le main pour faire tourner le jeu.
+Gestion du déroulement du jeu ainsi que du score. Elle a besoin des deux classes ci-dessus pour fonctionner ainsi que la classe permettant le contrôle de l'accéléromètre ```<SparkFunLSM9DS1.h>```, la gestion de l'écran LCD ```<LiquidCrystal.h>```  ainsi que la mémoire EEPROM concertant le meilleur score ```<EEPROM.h>```. Cette classe contient les méthodes ```setup()```et ```loop()``` qui sont appelées dans le main pour faire tourner le jeu.
 
 
 ## Roadmap
@@ -50,11 +51,15 @@ La structure du code pourrait être améliorée en créant de nouvelles classes.
 
 ### Composant
 
-Un composant permettant la lecture et l'écriture sur une mémoire externe pourrait être intéressant. Actuellement, le stockage du meilleur score se fait sur l'EEPROM de l'Arduino ce qui n'est pas l'idéal.   
+Un composant permettant la lecture et l'écriture sur une mémoire externe pourrait être intéressant. Actuellement, le stockage du meilleur score se fait sur l'EEPROM de l'Arduino ce qui n'est pas l'idéal.
+
+### Problème rencontré
+
+Au départ, j'avais prévu d'utiliser une matrice de LED 16x16 rouge. Malheureusement, le manque de documentation a rendu complexe son utilisation. Je suis tout de même très satisfait par la matrice 5x8. Etant RGB, elle permet un affichage plus sympa et clair. De plus, son format vertical convient parfaitement au style de jeu Doodle Jump.
 
 ### Amélioration du jeu
 
 Une amélioration du gameplay pourrait être de faire en sorte que le personnage puisse passer d'un côté de la matrice à l'autre au lieu d'être bloqué d'un côté. Cela pourrait rendre le jeu plus dynamique. 
 
-Concernant le score, il pourrait y avoir des "objets", par exemple sous forme de pixel jaune représentant des pièces, à récupérer pour augmenter le score.
+Concernant le score, il pourrait y avoir des "objets", par exemple sous forme de pixel jaune représentant des pièces, à récupérer pour augmenter son score final.
 

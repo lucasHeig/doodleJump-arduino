@@ -7,7 +7,7 @@
 #include <SparkFunLSM9DS1.h> // accéléromètre
 #include <LiquidCrystal.h> // écran lcd
 
-const int SEUIL = 300;  // seuil inclinaison
+const int SEUIL = 500;  // seuil inclinaison
 const int rs = 13, en = 12, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 const int MELODY[] = { 262, 330, 392, 523, 660, 784, 1046 };
 const int NOTE_DURATIONS[] = { 200, 200, 200, 150, 150, 150, 500 };
@@ -34,7 +34,7 @@ class Game {
       }
       imu.calibrate();
       matrix.begin();
-      matrix.setBrightness(20);
+      matrix.setBrightness(30);
       randomSeed(analogRead(0));
 
       // Placer personnage sur plateforme la plus basse
@@ -119,12 +119,12 @@ class Game {
     
       lcd.print("Score: "); lcd.print(score);
       lcd.setCursor(0, 1);
-      lcd.print("Best score: "); lcd.print(bestScore);
+      lcd.print("High score: "); lcd.print(bestScore);
       delay(2000);
       matrix.fillScreen(0);
       matrix.show();
       Serial.print("Score: "); Serial.println(score);
-      Serial.print("Best score: "); Serial.println(bestScore);
+      Serial.print("High score: "); Serial.println(bestScore);
 
       while (1);
     }
